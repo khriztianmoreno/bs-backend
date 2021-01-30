@@ -1,0 +1,32 @@
+{
+  "name": "bs-backend",
+  "version": "1.0.0",
+  "description": "A bunny Studio challenge project - backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khriztianmoreno/bs-backend.git"
+  },
+  "keywords": [
+    "node.js",
+    "mongodb",
+    "backend",
+    "challenge"
+  ],
+  "author": "Cristian Moreno <khriztianmoreno@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/khriztianmoreno/bs-backend/issues"
+  },
+  "homepage": "https://github.com/khriztianmoreno/bs-backend#readme",
+  "devDependencies": {
+    "eslint": "^7.18.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1"
+  }
+}
