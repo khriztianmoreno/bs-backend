@@ -4,7 +4,8 @@
   "description": "A bunny Studio challenge project - backend",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -r dotenv/config index.js"
+    "dev": "nodemon -r dotenv/config index.js",
+    "test": "mocha -r api/**/*.test.js --exit"
   },
   "repository": {
     "type": "git",
@@ -29,7 +30,10 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
-    "nodemon": "^2.0.7"
+    "mocha": "^8.2.1",
+    "nodemon": "^2.0.7",
+    "proxyquire": "^2.1.3",
+    "sinon": "^9.2.4"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
