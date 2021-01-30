@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const Joi = require('joi')
 
 function validateParamId(req, res, next) {
   const { id } = req.params

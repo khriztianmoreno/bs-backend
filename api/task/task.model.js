@@ -13,6 +13,7 @@ const TaskSchema = new Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
+      required: true,
     },
     description: { type: String, lowercase: true, required: true },
     state: {
