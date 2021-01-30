@@ -4,16 +4,16 @@
  */
 
 const Router = require('express').Router
+
 const controller = require('./user.controller')
-const auth = require('./../../auth/auth.service')
+const { validateParamId } = require('../../middlewares')
 
 const router = new Router()
 
 router.get('/', controller.index)
-router.delete('/:id', auth.hasRole('admin'), controller.destroy)
-router.get('/me', auth.isAuthenticated(), controller.me)
-router.put('/:id/password', auth.isAuthenticated(), controller.changePassword)
-router.get('/:id', auth.isAuthenticated(), controller.show)
+router.delete('/:id', validateParamId, controller.destroy)
+router.get('/:id', validateParamId, controller.show)
 router.post('/', controller.create)
+router.put('/:id', validateParamId, controller.update)
 
 module.exports = router

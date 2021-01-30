@@ -2,14 +2,22 @@
  * Using Rails-like standard naming convention for endpoints.
  * @author: Cristian Moreno Zuluaga <khriztianmoreno@gmail.com>
  */
-// const jwt = require('jsonwebtoken')
 
-// const User = require('./user.model')
-// const config = require('../../config/environment')
+const User = require('./user.model')
 
 function validationError(res, statusCode) {
   const statusCodeLocal = statusCode || 422
   return err => res.status(statusCodeLocal).json(err)
+}
+
+function handleEntityNotFound(res) {
+  return entity => {
+    if (!entity) {
+      res.status(404).end()
+      return null
+    }
+    return entity
+  }
 }
 
 function handleError(res, statusCode) {
@@ -19,110 +27,85 @@ function handleError(res, statusCode) {
 
 /**
  * Get list of users
- * restriction: 'admin'
  */
-function index(req, res) {
-  // return User.find({}, '-salt -password')
-  //   .exec()
-  //   .then(users => res.status(200).json(users))
-  //   .catch(handleError(res))
+async function index(_, res) {
+  try {
+    const users = await User.find({}).exec()
+    return res.status(200).json(users)
+  } catch (error) {
+    return handleError(res)
+  }
 }
 
 /**
  * Creates a new user
  */
-function create(req, res) {
-  // const newUser = new User(req.body)
-  // newUser.provider = 'local'
-  // newUser.role = 'user'
-  // newUser
-  //   .save()
-  //   .then(user => {
-  //     const token = jwt.sign({ _id: user._id }, config.secrets.session, {
-  //       expiresIn: 60 * 60 * 5,
-  //     })
-  //     res.json({ token })
-  //   })
-  //   .catch(validationError(res))
+async function create(req, res) {
+  const user = new User(req.body)
+
+  try {
+    const newUser = await user.save()
+    return res.json(newUser)
+  } catch (error) {
+    return validationError(res)
+  }
 }
 
 /**
  * Get a single user
  */
-function show(req, res, next) {
-  const userId = req.params.id
+async function show(req, res, next) {
+  const { id: userId } = req.params
 
-  // return User.findById(userId)
-  //   .exec()
-  //   .then(user => {
-  //     if (!user) {
-  //       return res.status(404).end()
-  //     }
-  //     return res.json(user.profile)
-  //   })
-  //   .catch(err => next(err))
+  try {
+    const user = await User.findById(userId).exec()
+    if (!user) {
+      return handleEntityNotFound(res)
+    }
+    return res.json(user)
+  } catch (error) {
+    next(error)
+  }
 }
 
 /**
  * Deletes a user
- * restriction: 'admin'
  */
-function destroy(req, res) {
-  // return User.findByIdAndRemove(req.params.id)
-  //   .exec()
-  //   .then(() => res.status(204).end())
-  //   .catch(handleError(res))
+async function destroy(req, res) {
+  const { id: userId } = req.params
+
+  try {
+    await User.findByIdAndDelete(userId).exec()
+    return res.status(204).end()
+  } catch (error) {
+    return handleError(res)
+  }
 }
 
 /**
- * Change a users password
+ * Updates a user
  */
-function changePassword(req, res) {
-  const userId = req.user._id
-  const oldPass = String(req.body.oldPassword)
-  const newPass = String(req.body.newPassword)
+async function update(req, res) {
+  const { id: userId } = req.params
+  const { name } = req.body
 
-  // return User.findById(userId)
-  //   .exec()
-  //   .then(user => {
-  //     if (user.authenticate(oldPass)) {
-  //       const userChange = user
-  //       userChange.password = newPass
-  //       return userChange
-  //         .save()
-  //         .then(() => {
-  //           res.status(204).end()
-  //         })
-  //         .catch(validationError(res))
-  //     }
+  try {
+    const user = await User.findByIdAndUpdate(
+      { _id: userId },
+      { name },
+      { upsert: true, new: true }
+    ).exec()
 
-  //     return res.status(403).end()
-  //   })
-}
-
-/**
- * Get my info
- */
-function me(req, res, next) {
-  const userId = req.user._id
-
-  // return User.findOne({ _id: userId }, '-salt -password')
-  //   .exec()
-  //   .then(user => {
-  //     // don't ever give out the password or salt
-  //     if (!user) {
-  //       return res.status(401).end()
-  //     }
-  //     return res.json(user)
-  //   })
-  //   .catch(err => next(err))
+    return res.status(200).json(user)
+  } catch (error) {
+    return handleError(res)
+  }
 }
 
 module.exports = {
-  changePassword,
   create,
   destroy,
   index,
-  me,
   show,
+  update,
 }

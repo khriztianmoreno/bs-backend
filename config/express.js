@@ -2,15 +2,17 @@
  * Express configuration
  */
 
-const compression = require('compression')
 const bodyParser = require('body-parser')
-const methodOverride = require('method-override')
+const compression = require('compression')
 const errorHandler = require('errorhandler')
+const methodOverride = require('method-override')
+const morgan = require('morgan')
 
 module.exports = app => {
   const env = app.get('env')
 
   app.use(compression())
+  app.use(morgan('dev'))
   app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }))
   app.use(bodyParser.json({ limit: '50mb' }))
   app.use(methodOverride())
