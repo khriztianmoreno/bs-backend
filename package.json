@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon -r dotenv/config index.js",
-    "test": "mocha -r api/**/*.test.js --exit"
+    "test": "mocha -r api/**/*.test.js --exit",
+    "start": "NODE_ENV=production node index.js"
   },
   "repository": {
     "type": "git",
@@ -24,7 +25,6 @@
   },
   "homepage": "https://github.com/khriztianmoreno/bs-backend#readme",
   "devDependencies": {
-    "dotenv": "^8.2.0",
     "eslint": "^7.18.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
@@ -39,9 +39,11 @@
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
     "joi": "^17.3.0",
+    "lodash": "^4.17.20",
     "method-override": "^3.0.0",
     "mongoose": "^5.11.14",
     "morgan": "^1.10.0"
