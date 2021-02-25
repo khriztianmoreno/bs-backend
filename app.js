@@ -16,6 +16,7 @@ mongoose.connect(config.mongo.uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
+
 mongoose.connection.on('error', err => {
   console.error('Error', 'MongoDB connection error', {
     data: err,
